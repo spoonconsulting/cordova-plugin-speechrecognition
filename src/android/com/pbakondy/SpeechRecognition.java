@@ -46,6 +46,7 @@ public class SpeechRecognition extends CordovaPlugin {
   private static final int MAX_RESULTS = 5;
   private static final String NOT_AVAILABLE = "Speech recognition service is not available on the system.";
   private static final String MISSING_PERMISSION = "Missing permission";
+  private static final String BACKGROUND_ERROR = "Application in background while using Speech recognition service.";
 
   private JSONArray mLastPartialResults = new JSONArray();
 
@@ -74,6 +75,12 @@ public class SpeechRecognition extends CordovaPlugin {
         recognizer.setRecognitionListener(listener);
       }
     });
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    callbackContext.error(BACKGROUND_ERROR);
   }
 
   @Override
